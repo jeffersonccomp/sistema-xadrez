@@ -1,6 +1,13 @@
 package application;
+
+import tabuleiro.Position;
+
 public class Programa {
     public static void main(String[] args) throws Exception {
-        System.out.println("Ola mundo ");
+        
+        Position pos = new Position(2, 5);
+        System.out.println(pos);
+
+
     }
 }
