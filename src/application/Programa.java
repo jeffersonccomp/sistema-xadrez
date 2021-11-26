@@ -1,6 +1,6 @@
 package application;
 
-import tabuleiro.Position;
+import tabuleiro.*;
 
 public class Programa {
     public static void main(String[] args) throws Exception {
