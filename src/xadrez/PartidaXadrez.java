@@ -2,6 +2,7 @@ package xadrez;
 
 import tabuleiro.Position;
 import tabuleiro.Tabuleiro;
+import xadrez.pecas.King;
 import xadrez.pecas.Rook;
 
 public class PartidaXadrez {
@@ -23,7 +24,14 @@ public class PartidaXadrez {
         return mat;
     }
 
+    private void lugarNovoPeca(char column, int row, PecaXadrez peca){
+        tabuleiro.lugarPeca(peca, new ChessPosition(column, row).toPosition());
+    }
+
     private void initialSetup(){
-        tabuleiro.lugarPeca(new Rook(tabuleiro, Color.WHITE), new Position(2, 1));
+        lugarNovoPeca('b', 6, new Rook(tabuleiro, Color.WHITE));
+        lugarNovoPeca('e', 8, new King(tabuleiro, Color.WHITE));
+
+
     }
 }
