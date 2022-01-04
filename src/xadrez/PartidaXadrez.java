@@ -1,5 +1,6 @@
 package xadrez;
 
+import tabuleiro.Peca;
 import tabuleiro.Position;
 import tabuleiro.Tabuleiro;
 import xadrez.pecas.King;
@@ -23,15 +24,63 @@ public class PartidaXadrez {
         }
         return mat;
     }
+    public boolean[][] possibleMoves(ChessPosition sourcePosition){
+        Position position = sourcePosition.toPosition();
+        validateSourcePosition(position);
+        return tabuleiro.peca(position).possibleMoves();
+ 
+    }
+
+
+
+    public PecaXadrez performChessMove(ChessPosition sourcePosition, ChessPosition targePosition){
+        Position source = sourcePosition.toPosition();
+        Position target = targePosition.toPosition();
+        validateSourcePosition(source);
+        validateTargetPosition(source, target);
+        Peca capturedPiece = makeMove(source, target);
+        return (PecaXadrez)capturedPiece;
+    }
+    private Peca makeMove(Position source, Position target){
+        Peca p = tabuleiro.removePeca(source);
+        Peca capturedPiece = tabuleiro.removePeca(target);
+        tabuleiro.lugarPeca(p, target);
+        return capturedPiece;
+    }
+    private void validateSourcePosition(Position position){
+        if(!tabuleiro.thereIsAPiece(position)){
+            throw new ChessException("Sem peça na posiçao inicial");
+        }
+        if(!tabuleiro.peca(position).isThereAnyPossibleMove()){
+            throw new ChessException("Movimento não possivel para essa peça");
+        }
+    }
+    private void validateTargetPosition(Position source, Position target){
+            if(!tabuleiro.peca(source).possibleMove(target)){
+                throw new ChessException("Movimento não valido");
+            }
+    }
 
     private void lugarNovoPeca(char column, int row, PecaXadrez peca){
         tabuleiro.lugarPeca(peca, new ChessPosition(column, row).toPosition());
     }
 
-    private void initialSetup(){
-        lugarNovoPeca('b', 6, new Rook(tabuleiro, Color.WHITE));
-        lugarNovoPeca('e', 8, new King(tabuleiro, Color.WHITE));
 
-
+    private void initialSetup() {
+        lugarNovoPeca('c', 1, new Rook(tabuleiro, Color.WHITE));
+        lugarNovoPeca('c', 2, new Rook(tabuleiro, Color.WHITE));
+        lugarNovoPeca('d', 2, new Rook(tabuleiro, Color.WHITE));
+        lugarNovoPeca('e', 2, new Rook(tabuleiro, Color.WHITE));
+        lugarNovoPeca('e', 1, new Rook(tabuleiro, Color.WHITE));
+        lugarNovoPeca('d', 1, new King(tabuleiro, Color.WHITE));
+    
+        lugarNovoPeca('c', 7, new Rook(tabuleiro, Color.BLACK));
+        lugarNovoPeca('c', 8, new Rook(tabuleiro, Color.BLACK));
+        lugarNovoPeca('d', 7, new Rook(tabuleiro, Color.BLACK));
+        lugarNovoPeca('e', 7, new Rook(tabuleiro, Color.BLACK));
+        lugarNovoPeca('e', 8, new Rook(tabuleiro, Color.BLACK));
+        lugarNovoPeca('d', 8, new King(tabuleiro, Color.BLACK));
     }
+
 }
+
