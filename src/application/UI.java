@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import xadrez.ChessPosition;
 import xadrez.Color;
+import xadrez.PartidaXadrez;
 import xadrez.PecaXadrez;
 
 public class UI {
@@ -45,6 +46,14 @@ public class UI {
             
     }
 
+    public static void printMatch(PartidaXadrez pecaXadrez ){
+        printBoard(pecaXadrez.getPecas());
+        System.out.println();
+        System.out.println("Turno: " + pecaXadrez.getTurn());
+        System.out.println();
+        System.out.println("Esperando jogador: " + pecaXadrez.getCurrentPlayer());
+
+    }
 
     public static void printBoard(PecaXadrez[][] pecas){
         for(int i=0; i<pecas.length; i++){

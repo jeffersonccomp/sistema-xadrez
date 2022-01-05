@@ -8,11 +8,22 @@ import xadrez.pecas.Rook;
 
 public class PartidaXadrez {
     private Tabuleiro tabuleiro;
+    private Color currentPlayer;
+    private int turn;
 
     public PartidaXadrez(){
         tabuleiro = new Tabuleiro(8, 8);
+        turn = 1;
+        currentPlayer = Color.WHITE;
         initialSetup();
     }
+    public int getTurn(){
+        return turn;
+    }
+    public Color getCurrentPlayer(){
+        return currentPlayer;
+    }
+
     public PecaXadrez[][] getPecas(){
         PecaXadrez[][] mat = new PecaXadrez[tabuleiro.getRows()][tabuleiro.getColumns()];
         for(int i=0; i<tabuleiro.getRows(); i++){
@@ -31,14 +42,13 @@ public class PartidaXadrez {
  
     }
 
-
-
     public PecaXadrez performChessMove(ChessPosition sourcePosition, ChessPosition targePosition){
         Position source = sourcePosition.toPosition();
         Position target = targePosition.toPosition();
         validateSourcePosition(source);
         validateTargetPosition(source, target);
         Peca capturedPiece = makeMove(source, target);
+        nextTurn();
         return (PecaXadrez)capturedPiece;
     }
     private Peca makeMove(Position source, Position target){
@@ -51,6 +61,9 @@ public class PartidaXadrez {
         if(!tabuleiro.thereIsAPiece(position)){
             throw new ChessException("Sem peça na posiçao inicial");
         }
+        if(currentPlayer != ((PecaXadrez)tabuleiro.peca(position)).getColor()){
+            throw new ChessException("Peça de outro jogador");
+        }
         if(!tabuleiro.peca(position).isThereAnyPossibleMove()){
             throw new ChessException("Movimento não possivel para essa peça");
         }
@@ -61,6 +74,10 @@ public class PartidaXadrez {
             }
     }
 
+    private void nextTurn(){
+        turn++;
+        currentPlayer = (currentPlayer == Color.WHITE)? Color.BLACK : Color.WHITE;
+    }
     private void lugarNovoPeca(char column, int row, PecaXadrez peca){
         tabuleiro.lugarPeca(peca, new ChessPosition(column, row).toPosition());
     }

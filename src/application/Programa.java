@@ -19,7 +19,7 @@ public class Programa {
             try{
                 System.out.println();
                 UI.limpaTela();
-                UI.printBoard(partida.getPecas());
+                UI.printMatch(partida);;
                 System.out.println();
                 System.out.print("Source: ");
                 ChessPosition source = UI.readChessPosition(sc);
